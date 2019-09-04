@@ -950,3 +950,41 @@ public static Object goodCopyOf(Object a, int newLength)
     - The parameter of goodCopyOf is declared to be type Object and not an array of objects (Object[])
     - The array type int[] can be converted to an object, but not to an array of integers
 
+
+#### Invoking Arbitrary Methods
+
+Function pointers do not exist in Java. Can use **invoke** method on Method class to call the method wrapped in the current method object.
+
+```java
+// Signature 
+Object invoke(Object obj, Object... args)
+```
+!!! Note
+- first parameter is the implicit parameter. 
+- remaining parameters are explicit.
+- first parameter for static methods is null
+
+**invoke** method will return wrapper type if return type is a primitive type. Need to use automatic unboxing to convert:
+
+```java
+String n = (String) m1.invoke(harry);
+```
+
+Method objects can be retrieved using **getDeclaredMethods** or by calling **getMethod** method of the Class.
+
+```java
+Method getMethod(String name, Class... parameterTypes)
+
+Method m1 = Employee.class.getMethod("getName");
+Method m2 = Employee.class.getMethod("raiseSalary", double.class);
+```
+
+### Design Hints for Inheritance
+
+1. Place common operations and fields in superclass
+1. Don't use protected fields
+1. use inheritance to model the is-a relationship
+1. don't use inhertance unless all inherited methods makes sense
+1. Don't change the expected behavior when you override a method
+1. use polymorphism, not type information
+1. don't overuse reflection
